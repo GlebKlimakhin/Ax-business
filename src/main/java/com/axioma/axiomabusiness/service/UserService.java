@@ -1,9 +1,11 @@
 package com.axioma.axiomabusiness.service;
 
+import com.axioma.axiomabusiness.model.dto.UserDto;
 import com.axioma.axiomabusiness.repository.GroupRepository;
 import com.axioma.axiomabusiness.repository.HomeworkRepository;
 import com.axioma.axiomabusiness.repository.RoleRepository;
 import com.axioma.axiomabusiness.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.axioma.axiomabusiness.model.entity.*;
@@ -11,6 +13,7 @@ import com.axioma.axiomabusiness.model.entity.*;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -19,6 +22,7 @@ public class UserService {
     private RoleRepository roleRepository;
     private GroupRepository groupRepository;
     private HomeworkRepository homeworkRepository;
+    private ModelMapper modelMapper;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -40,31 +44,49 @@ public class UserService {
         this.homeworkRepository = homeworkRepository;
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    @Autowired
+    public void setModelMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
     }
 
-    public Optional<User> findById(long id) {
-        return userRepository.findById(id);
+    public List<UserDto> findAll() {
+        return userRepository.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    public List<User> findAllByFirstnameAndSurname(String firstname, String surname) {
-        return userRepository.findAllByFirstnameAndSurname(firstname, surname);
+    public Optional<UserDto> findById(long id) {
+        return userRepository.findById(id).map(this::mapToDto);
     }
 
-    public List<User> findAllByRoleName(String roleName) throws EntityNotFoundException {
+    public List<UserDto> findAllByFirstnameAndSurname(String firstname, String surname) {
+        return userRepository.findAllByFirstnameAndSurname(firstname, surname).stream().map(this::mapToDto).collect(Collectors.toList());
+    }
+
+    public List<UserDto> findAllByRoleName(String roleName) {
         return userRepository.findAllByRoles(roleRepository.findByName(roleName).orElseThrow(
-                () -> new EntityNotFoundException("No such role found")));
+                () -> new EntityNotFoundException("No such role found"))).stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    public List<User> findAllByGroupName(String groupName) throws EntityNotFoundException {
+    public List<UserDto> findAllByGroupName(String groupName) throws EntityNotFoundException {
         return userRepository.findAllByGroups(groupRepository.findByName(groupName).orElseThrow(
-                ()-> new EntityNotFoundException("No such group found")));
+                ()-> new EntityNotFoundException("No such group found"))).stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    public List<User> findAllByHomeworkId(long id) {
-        return userRepository.findAllByHomework(homeworkRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("No such homework found")));
+    public List<UserDto> findAllByGroupId(Integer groupId) {
+        return userRepository.findAllByGroups(groupRepository.findById(groupId).orElseThrow(
+                ()-> new EntityNotFoundException("No such group found"))).stream().map(this::mapToDto).collect(Collectors.toList());
+    }
+
+    public List<UserDto> findAllByHomeworkId(long id) {
+        return userRepository.findAllByHomeworks(homeworkRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("No such homework found"))).stream().map(this::mapToDto).collect(Collectors.toList());
+    }
+
+    private UserDto mapToDto(User user) {
+        return modelMapper.map(user, UserDto.class);
+    }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 
 //    public Double getAverageScore(User user) {

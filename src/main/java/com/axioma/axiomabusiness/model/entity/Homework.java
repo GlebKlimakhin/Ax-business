@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
 @Entity
 @Table(name = "homeworks")
@@ -28,14 +27,16 @@ public class Homework {
     @Column(name = "deadline_date")
     Date deadline;
 
-    @ManyToMany
-            @JoinTable(name = "homeworks_exercises",
-            joinColumns = @JoinColumn(name = "homework_id"),
-            inverseJoinColumns = @JoinColumn(name = "exercise_id"))
-    Set<ArithmeticExercise> arithmeticExercises;
+//    @ManyToMany
+//            @JoinTable(name = "homeworks_exercises",
+//            joinColumns = @JoinColumn(name = "homework_id"),
+//            inverseJoinColumns = @JoinColumn(name = "exercise_id"))
+//    Set<ArithmeticExercise> arithmeticExercises;
 
     @ManyToOne
     @JoinColumn(name = "group_id")
     Group group;
+
+    //todo List<Exercise> superclass
 
 }

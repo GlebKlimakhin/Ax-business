@@ -13,7 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByGroups(Group group);
 
-    List<User> findAllByHomework(Homework homework);
+    List<User> findAllByHomeworks(Homework homework);
 
     List<User> findAllByFirstnameAndSurname(String firstname, String surname);
+
 }

@@ -26,7 +26,7 @@ public class GroupService {
         return groupRepository.findByName(name);
     }
 
-    public Optional<Group> findById(Long id) {
+    public Optional<Group> findById(Integer id) {
         return groupRepository.findById(id);
     }
 

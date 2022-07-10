@@ -24,23 +24,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
     String username;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     String password;
 
-    @Column(name = "firstname")
+    @Column(name = "firstname", nullable = false)
     String firstname;
 
-    @Column(name = "surname")
+    @Column(name = "surname", nullable = false)
     String surname;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     @CreationTimestamp
     Date createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     @UpdateTimestamp
     Date updatedAt;
 
@@ -62,4 +62,15 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     List<Role> roles;
 
+//    @ManyToMany
+//            @JoinTable(name = "users_arithmetic_exercises",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "exercise_id"))
+//    List<ArithmeticExercise> arithmeticExercises;
+
+    @ManyToMany
+            @JoinTable(name = "users_reading_exercises",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "exercise_id"))
+    List<ReadingExercise> readingExercises;
 }

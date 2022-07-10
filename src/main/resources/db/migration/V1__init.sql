@@ -36,5 +36,12 @@ create table users_groups(
 
 create table groups_homeworks(
     group_id int primary key not null references groups(id),
-    homework_id
-)
+    homework_id bigint not null references homeworks(id)
+);
+
+create table reading_exercises(
+    id bigserial primary key not null unique,
+    data text
+);
+
+

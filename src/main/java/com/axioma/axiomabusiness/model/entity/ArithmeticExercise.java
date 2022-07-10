@@ -1,10 +1,17 @@
-package com.axioma.axiomabusiness.model.entity;
-
-import java.util.Date;
-
-public class ArithmeticExercise extends Exercise {
-
-    long id;
-    String data;
-    Boolean isCorrect;
-}
+//package com.axioma.axiomabusiness.model.entity;
+//
+//import javax.persistence.*;
+//
+//@Entity
+//public class ArithmeticExercise {
+//
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    long id;
+//
+//    @Column(name = "is_correct")
+//    Boolean isCorrect;
+//
+//    @Column(name = "data")
+//    String data;
+//}
